@@ -1,0 +1,71 @@
+﻿
+@{
+    var cart = Model.Cart as ShoppingCart;
+    var products = Model.Products ;
+    
+}
+
+<h2>Twój Koszyk</h2>
+
+@if (cart != null && cart.productsInCart != null && cart.productsInCart.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Cena</th>
+                <th>Akcja</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cart.productsInCart)
+            {
+                <tr>
+                    <td>@item.name</td>
+                    <td>
+                        @{
+                            decimal priceToDisplay;
+                            if (ViewBag.ShowBrutto == true)
+                            {
+                                priceToDisplay = (decimal)item.price;
+                                priceToDisplay *= (100 + item.Category.vat) / 100;
+                            }
+                            else
+                            {
+                                priceToDisplay = (decimal)item.price;
+                            }
+                        }
+                        @priceToDisplay
+                    </td>
+                    <td>
+                        <!-- Dodano link do usuwania produktu z koszyka -->
+                        <form action="@Url.Action("RemoveFromCart", "Products")" method="post">
+                            <input type="hidden" name="productId" value="@item.Id" />
+                            <button type="submit">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>
+        Całkowita kwota: @cart.productsInCart.Sum(p =>
+    {
+        var price = p.price;
+        if (ViewBag.ShowBrutto == true)
+        {
+        price *= (1 + p.Category.vat / 100);
+        }
+        return price;
+    }).ToString("C2")
+    </h3>
+
+    <form action="@Url.Action("Checkout", "Products")" method="post">
+        <button type="submit" class="btn btn-success">Zamów</button>
+    </form>
+}
+else
+{
+    <p>Twój koszyk jest pusty.</p>
+}

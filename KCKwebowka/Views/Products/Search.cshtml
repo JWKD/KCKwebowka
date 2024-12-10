@@ -1,0 +1,82 @@
+﻿@{
+    var searchName = ViewData["SearchName"] as string;
+    var categoryId = ViewData["CategoryId"] as int?;
+    var categories = ViewData["Categories"] as List<KCKwebowka.Models.Category>;
+    var products = ViewData["Products"] as List<KCKwebowka.Models.Product>;
+}
+
+<h2>Wyszukiwarka</h2>
+
+<form method="get" action="@Url.Action("SearchByName", "Products")">
+    <div class="form-group">
+        <label for="searchName">Wyszukaj po nazwie</label>
+        <input type="text" id="searchName" name="searchName" class="form-control" value="@searchName" />
+    </div>
+    <button type="submit" class="btn btn-primary">Szukaj</button>
+</form>
+
+<form method="get" action="@Url.Action("SearchByCategory", "Products")">
+    <div class="form-group">
+        <label for="categoryId">Wyszukaj po kategorii</label>
+       <select id="categoryId" name="categoryId" class="form-control">
+    <option value="">Wybierz kategorię</option>
+    @foreach (var category in categories)
+    {
+                <option value="@category.Id" )>
+            @category.name
+        </option>
+    }
+</select>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Szukaj</button>
+</form>
+
+@if (products != null && products.Any())
+{
+    <h3>Wyniki wyszukiwania</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Produkt</th>
+                <th>Cena</th>
+                <th>Kategoria</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.name</td>
+                    <td>
+                        @{
+                            decimal priceToDisplay;
+                            if (ViewBag.ShowBrutto == true)
+                            {
+                                priceToDisplay = (decimal)product.price;
+                                priceToDisplay *= (100 + product.Category.vat) / 100;
+                            }
+                            else
+                            {
+                                priceToDisplay = (decimal)product.price;
+                            }
+                        }
+                        @priceToDisplay
+                    </td>
+                    <td>@product.Category.name</td>
+                    <td>
+                        <form asp-action="AddToCart" method="post">
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <button type="submit" class="btn btn-primary">Dodaj do koszyka</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Brak wyników wyszukiwania.</p>
+}

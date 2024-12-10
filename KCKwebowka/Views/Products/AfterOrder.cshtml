@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "Po złożeniu zamówienia";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - KCKwebowka</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+    <style>
+        /* Styl dla całej strony */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Tło dla kontenera animacji */
+        .order-container {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* Nagłówek */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        /* Tekst informacyjny */
+        p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        /* Animacja pakowania */
+        .packing-animation {
+            width: 100px;
+            height: 100px;
+            background-color: #007bff;
+            border-radius: 8px;
+            margin-top: 30px;
+            animation: packing 3s ease-in-out infinite;
+        }
+
+        .po{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Animacja pakowania */
+        @@keyframes packing {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            25% {
+                transform: rotate(90deg) scale(1.2);
+            }
+            50% {
+                transform: rotate(180deg) scale(1);
+            }
+            75% {
+                transform: rotate(270deg) scale(1.2);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        /* Przyciski */
+        .btn {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="order-container">
+        <h1>Twoje zamówienie zostało złożone!</h1>
+        <p>Teraz Twoje produkty są starannie pakowane i przygotowywane do wysyłki.</p>
+        
+        <!-- Animacja pakowania -->
+        <div class="po">
+            <div class="packing-animation"></div>
+            <div class="packing-animation"></div>
+            <div class="packing-animation"></div>
+        </div>
+        
+
+        <!-- Przycisk powrotu -->
+        <a href="/Products" class="btn btn-primary">Wróć do listy produktów</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

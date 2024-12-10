@@ -1,0 +1,62 @@
+﻿@model IEnumerable<KCKwebowka.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Cena
+            </th>
+            <th>
+                Kategoria
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                <td>
+                    @{
+                        decimal priceToDisplay;
+                        if (ViewBag.ShowBrutto == true)
+                        {
+                            priceToDisplay = (decimal)item.price;
+                            priceToDisplay *= (100 + item.Category.vat) / 100;
+                        }
+                        else
+                        {
+                            priceToDisplay = (decimal)item.price;
+                        }
+                    }
+                    @priceToDisplay
+                </td>
+                <td>
+                    @item.Category?.name
+                </td>
+                <td>
+                    <form asp-action="AddToCart" method="post">
+                        <input type="hidden" name="productId" value="@item.Id" />
+                        <button type="submit" class="btn btn-primary">Dodaj do koszyka</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
